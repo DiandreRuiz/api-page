@@ -95,16 +95,22 @@ const getCitySearch = async (citySearchString) => {
     const requestURL = `${baseAPIUrl}?${searchParams.toString()}`;
     const citySearchResponse = await singleAPICall(requestURL);
     const citySearchData = await citySearchResponse.json();
-    const firstResult = citySearchData.results[0];
-    const latitude = firstResult.latitude;
-    const longitude = firstResult.longitude;
-    const cityName = firstResult.name;
 
-    return {
-        cityName: cityName,
-        latitude: latitude,
-        longitude: longitude,
-    };
+    if ("results" in citySearchData) {
+        const firstResult = citySearchData.results[0];
+        const latitude = firstResult.latitude;
+        const longitude = firstResult.longitude;
+        const cityName = firstResult.name;
+
+        return {
+            cityName: cityName,
+            latitude: latitude,
+            longitude: longitude,
+        };
+    } else {
+        console.log("null");
+        return null;
+    }
 };
 
 const getCurrentTempLatLong = async (latitude, longitude) => {
@@ -131,20 +137,29 @@ const getCurrentTempCitySearch = async (citySearchString) => {
 
     // Convert user search string to lat/long
     const citySearchResult = await getCitySearch(citySearchString);
-    citySearchResultLat = citySearchResult.latitude;
-    citySearchResultLong = citySearchResult.longitude;
-    citySearchResultName = citySearchResult.cityName;
+    if (citySearchResult !== null) {
+        citySearchResultLat = citySearchResult.latitude;
+        citySearchResultLong = citySearchResult.longitude;
+        citySearchResultName = citySearchResult.cityName;
 
-    // Get current temp for converted lat/long
-    const cityForecastResult = await getCurrentTempLatLong(citySearchResultLat, citySearchResultLong);
+        // Get current temp for converted lat/long
+        const cityCurrentTempResult = await getCurrentTempLatLong(citySearchResultLat, citySearchResultLong);
 
-    return cityForecastResult;
+        return cityCurrentTempResult;
+    } else {
+        errorUserInput("#api2-form", `Could not find the city "${citySearchString}". Please try again.`);
+    }
 };
 
 averageTempForm.addEventListener("submit", async (e) => {
     //TODO: Need error handling for bad city search
     e.preventDefault();
     const userInput = averageTempForm.querySelector("#city-input").value.trim();
+    if (!userInput) {
+        errorUserInput("#api2-form", "Please provide a city");
+    } else {
+        getCurrentTempCitySearch(userInput);
+    }
 
     //getCurrentTempCitySearch("Philadelphia");
 });
