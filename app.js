@@ -93,13 +93,13 @@ const errorUserInput = (containerID, errorMessage) => {
 const getCitySearch = async (citySearchString) => {
     // Get lat/long for city search string
     const searchParams = new URLSearchParams({
-        baseAPIUrl: OPEN_METEO_GEOCODING,
         name: citySearchString,
         count: 1,
         language: "en",
         format: "json",
     });
-    const requestURL = `${baseAPIUrl}?${searchParams.toString()}`;
+    const requestURL = `${OPEN_METEO_GEOCODING}?${searchParams.toString()}`;
+    console.log(requestURL);
     const citySearchResponse = await singleAPICall(requestURL);
     const citySearchData = await citySearchResponse.json();
 
@@ -115,7 +115,6 @@ const getCitySearch = async (citySearchString) => {
             longitude: longitude,
         };
     } else {
-        console.log("null");
         return null;
     }
 };
@@ -123,14 +122,13 @@ const getCitySearch = async (citySearchString) => {
 const getCurrentTempLatLong = async (latitude, longitude) => {
     // Get current temp for lat/long
     const searchParams = new URLSearchParams({
-        baseAPIUrl: OPEN_METEO_FORECAST,
         latitude: latitude,
         longitude: longitude,
         current: ["temperature_2m"],
         temperature_unit: "fahrenheit",
         timezone: "auto",
     });
-    const requestURL = `${baseAPIUrl}?${searchParams.toString()}`;
+    const requestURL = `${OPEN_METEO_FORECAST}?${searchParams.toString()}`;
     const forecastResponse = await singleAPICall(requestURL);
     const forecastData = await forecastResponse.json();
     const currentTemp = forecastData.current.temperature_2m;
