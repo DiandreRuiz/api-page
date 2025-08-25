@@ -103,8 +103,19 @@ const getForecastLatLong = async (latitude, longitude) => {
         latitude: latitude,
         longitude: longitude,
     });
+    const requestURL = `${baseAPIUrl}?${searchParams.toString()}`;
+    const forecastResponse = await singleAPICall(requestURL);
+    const forecastData = await forecastResponse.json();
+    const firstResult = forecastData.results[0];
+    return firstResult;
 };
 
-averageTempButton.addEventListener("click", async (citySearch) => {
-    const cityInformation = getCitySearch("Philadelphia");
+const getForecastCitySearch = async (citySearchString) => {
+    const citySearchResult = await getCitySearch(citySearchString);
+    const cityForecastResult = await getForecastLatLong(citySearchResult.latitude, citySearchResult.longitude);
+    console.log(cityForecastResult);
+};
+
+averageTempButton.addEventListener("click", async () => {
+    getForecastCitySearch("Philadelphia");
 });
