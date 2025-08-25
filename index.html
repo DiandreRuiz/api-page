@@ -6,23 +6,6 @@
         <link rel="stylesheet" href="/styles.css" class="stylesheet" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" class="stylesheet" />
         <title>API Page</title>
-                <style>
-                    .fixed-card {
-                        width: 350px;
-                        height: 320px;
-                        box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-                        border-radius: 0.5rem;
-                        display: flex;
-                        flex-direction: column;
-                    }
-                    .card-body {
-                        flex: 1 1 auto;
-                    }
-                    .card-bottom-btn {
-                        margin-top: auto;
-                        margin-bottom: 18px;
-                    }
-                </style>
     </head>
     <body>
         <div class="container-fluid text-center p-3 mb-2 bg-secondary">
@@ -31,125 +14,54 @@
                     <h1 class="text-white">Welcome to the API Page</h1>
                 </div>
             </div>
+        </div>
 
+        <div class="container py-5">
+            <!-- Row 1 -->
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-6 text-center border d-flex flex-column">
+                    <h5 class="card-title m-2">Dog API</h5>
+                    <p class="card-text">Get a random dog photo</p>
+                    <div class="container" id="api0-container"></div>
+                    <button id="api-0-button" class="btn btn-primary d-block mx-auto card-bottom-btn my-3">Open api0</button>
                 </div>
-
-                <!-- API Viewport Container -->
-                <div class="container mb-5" id="api-viewport">
-                    <!-- This is the viewport for API front ends -->
+                <div class="col-md-6 text-center border d-flex flex-column">
+                    <h5 class="card-title m-2">Dog API</h5>
+                    <p class="card-text">Get a random dog photo</p>
+                    <div class="container" id="api1-container"></div>
+                    <button id="api-1-button" class="btn btn-primary d-block mx-auto card-bottom-btn my-3">Open api1</button>
                 </div>
-
-                <div class="container py-5">
-                    <!-- Row 1 -->
-                    <div class="row justify-content-center mb-4">
-                        <div class="col-md-4 d-flex justify-content-center">
-                            <div class="card fixed-card">
-                                <div class="card-body text-center">
-                                    <h5 class="card-title">Dog API</h5>
-                                    <p class="card-text">Get a random dog photo</p>
-                                    <div class="container" id="api0-container">
-                                    </div>
-                                </div>
-                                <button id="api-0-button" class="btn btn-primary d-block mx-auto card-bottom-btn">Open api0</button>
-                            </div>
-                        </div>
-                        <div class="col-md-4 d-flex justify-content-center">
-                            <div class="card fixed-card">
-                                <div class="card-body text-center">
-                                    <h5 class="card-title">api1</h5>
-                                    <p class="card-text">Description for api1.</p>
-                                    <div class="container" id="api1-container">
-                                    </div>
-
-                                </div>
-                                <button id="api-1-button" class="btn btn-primary d-block mx-auto card-bottom-btn">Open api1</button>
-                            </div>
-                        </div>
-                        <div class="col-md-4 d-flex justify-content-center">
-                            <div class="card fixed-card">
-                                <div class="card-body text-center">
-                                    <h5 class="card-title">api2</h5>
-                                    <p class="card-text">Description for api2.</p>
-                                    <div class="container" id="api2-container">
-                                    </div>
-                                </div>
-                                <button id="api-2-button" class="btn btn-primary d-block mx-auto card-bottom-btn">Open api2</button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Row 2 -->
-                    <div class="row justify-content-center mb-4">
-                        <div class="col-md-4 d-flex justify-content-center">
-                            <div class="card fixed-card d-flex flex-column">
-                                <div class="card-body text-center">
-                                    <h5 class="card-title">api3</h5>
-                                    <p class="card-text">Description for api3.</p>
-                                    <div class="container" id="api3-container">
-                                    </div>
-                                </div>
-                                <button id="api-3-button" class="btn btn-primary d-block mx-auto card-bottom-btn">Open api3</button>
-                            </div>
-                        </div>
-                        <div class="col-md-4 d-flex justify-content-center">
-                            <div class="card fixed-card">
-                                <div class="card-body text-center">
-                                    <h5 class="card-title">api4</h5>
-                                    <p class="card-text">Description for api4.</p>
-                                    <div class="container" id="api4-container">
-                                    </div>
-                                </div>
-                                <button id="api-4-button" class="btn btn-primary d-block mx-auto card-bottom-btn">Open api4</button>
-                            </div>
-                        </div>
-                        <div class="col-md-4 d-flex justify-content-center">
-                            <div class="card fixed-card">
-                                <div class="card-body text-center">
-                                    <h5 class="card-title">api5</h5>
-                                    <p class="card-text">Description for api5.</p>
-                                    <div class="container" id="api5-container">
-                                    </div>
-                                </div>
-                                <button id="api-5-button" class="btn btn-primary d-block mx-auto card-bottom-btn">Open api5</button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Row 3 -->
-                    <div class="row justify-content-center mb-4">
-                        <div class="col-md-4 d-flex justify-content-center">
-                            <div class="card fixed-card">
-                                <div class="card-body text-center">
-                                    <h5 class="card-title">api6</h5>
-                                    <p class="card-text">Description for api6.</p>
-                                    <div class="container" id="api6-container">
-                                    </div>
-                                </div>
-                                <button id="api-6-button" class="btn btn-primary d-block mx-auto card-bottom-btn">Open api6</button>
-                            </div>
-                        </div>
-                        <div class="col-md-4 d-flex justify-content-center">
-                            <div class="card fixed-card">
-                                <div class="card-body text-center">
-                                    <h5 class="card-title">api7</h5>
-                                    <p class="card-text">Description for api7.</p>
-                                    <div class="container" id="api7-container">
-                                    </div>
-                                </div>
-                                <button id="api-7-button" class="btn btn-primary d-block mx-auto card-bottom-btn">Open api7</button>
-                            </div>
-                        </div>
-                        <div class="col-md-4 d-flex justify-content-center">
-                            <div class="card fixed-card">
-                                <div class="card-body text-center">
-                                    <h5 class="card-title">api8</h5>
-                                    <p class="card-text">Description for api8.</p>
-                                    <div class="container" id="api8-container">
-                                    </div>
-                                </div>
-                                <button id="api-8-button" class="btn btn-primary d-block mx-auto card-bottom-btn">Open api8</button>
-                            </div>
-                        </div>
-                    </div>
+            </div>
+            <!-- Row 2 -->
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-6 text-center border d-flex flex-column">
+                    <h5 class="card-title m-2">Dog API</h5>
+                    <p class="card-text">Get a random dog photo</p>
+                    <div class="container" id="api2-container"></div>
+                    <button id="api-2-button" class="btn btn-primary d-block mx-auto card-bottom-btn my-3">Open api2</button>
                 </div>
+                <div class="col-md-6 text-center border d-flex flex-column">
+                    <h5 class="card-title m-2">Dog API</h5>
+                    <p class="card-text">Get a random dog photo</p>
+                    <div class="container" id="api3-container"></div>
+                    <button id="api-3-button" class="btn btn-primary d-block mx-auto card-bottom-btn my-3">Open api3</button>
+                </div>
+            </div>
+            <!-- Row 3 -->
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-6 text-center border d-flex flex-column">
+                    <h5 class="card-title m-2">Dog API</h5>
+                    <p class="card-text">Get a random dog photo</p>
+                    <div class="container" id="api4-container"></div>
+                    <button id="api-4-button" class="btn btn-primary d-block mx-auto card-bottom-btn my-3">Open api4</button>
+                </div>
+                <div class="col-md-6 text-center border d-flex flex-column">
+                    <h5 class="card-title m-2">Dog API</h5>
+                    <p class="card-text">Get a random dog photo</p>
+                    <div class="container" id="api5-container"></div>
+                    <button id="api-5-button" class="btn btn-primary d-block mx-auto card-bottom-btn my-3">Open api5</button>
+                </div>
+            </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="/app.js"></script>

@@ -19,10 +19,18 @@ const singleAPICall = async (endpointURL) => {
 
 // Button Listeners for API Calls
 api0Button.addEventListener("click", async () => {
-    const dogPhotoContainer = document.querySelector("#api0-container");
     const dogPhotoURL = await singleAPICall(DOG_API);
+    const dogPhotoContainer = document.querySelector("#api0-container");
     const dogIMG = document.createElement("img");
+
+    // Clear previous dog image if it exists
+    dogPhotoContainer.innerHTML = "";
+
+    // Create new img element with returned URL
     dogIMG.src = dogPhotoURL;
-    dogIMG.style.width = "100%";
+    dogIMG.classList.add("img-fluid", "rounded", "mx-auto", "d-block");
+    dogIMG.alt = "A Random Dog";
+
+    // Append new img element
     dogPhotoContainer.appendChild(dogIMG);
 });
