@@ -6,14 +6,21 @@
 // Append <img> element as new child to api0-container div
 
 // API Endpoints
+
+// Animal Pictures
 DOG_IMG_API = "https://dog.ceo/api/breeds/image/random";
 CAT_IMG_API = "https://api.thecatapi.com/v1/images/search";
 
-// Initialize variables for all API Card buttons
+// Weather
+OPEN_METEO_GEOCODING = "https://geocoding-api.open-meteo.com/v1/search";
+OPEN_METEO_FORECAST = "https://api.open-meteo.com/v1/forecast";
+
+// API Activate Buttons & Forms
 const dogAPIButton = document.querySelector("#api-0-button");
 const catAPIButton = document.querySelector("#api-1-button");
 const averageTempForm = document.querySelector("#api2-form");
 
+// General API Call Function
 const singleAPICall = async (endpointURL) => {
     try {
         const response = await fetch(endpointURL); // Make call to api & await response
@@ -79,14 +86,14 @@ const errorUserInput = (containerID, errorMessage) => {
     const errorHeading = document.createElement("h5");
     errorHeading.innerText = errorMessage;
     errorHeading.classList.add("text-danger");
+    errorHeading.classList.add("errorUserInputHeading");
     userInputContainer.appendChild(errorHeading);
 };
 
 const getCitySearch = async (citySearchString) => {
     // Get lat/long for city search string
-    const baseAPIUrl = "https://geocoding-api.open-meteo.com/v1/search";
     const searchParams = new URLSearchParams({
-        baseAPIUrl: baseAPIUrl,
+        baseAPIUrl: OPEN_METEO_GEOCODING,
         name: citySearchString,
         count: 1,
         language: "en",
@@ -115,9 +122,8 @@ const getCitySearch = async (citySearchString) => {
 
 const getCurrentTempLatLong = async (latitude, longitude) => {
     // Get current temp for lat/long
-    const baseAPIUrl = "https://api.open-meteo.com/v1/forecast";
     const searchParams = new URLSearchParams({
-        baseAPIUrl: baseAPIUrl,
+        baseAPIUrl: OPEN_METEO_FORECAST,
         latitude: latitude,
         longitude: longitude,
         current: ["temperature_2m"],
@@ -154,6 +160,13 @@ const getCurrentTempCitySearch = async (citySearchString) => {
 averageTempForm.addEventListener("submit", async (e) => {
     //TODO: Need error handling for bad city search
     e.preventDefault();
+    // Clear currently displayed errors
+    const userInputForm = document.querySelector("#api2-form");
+    if (userInputForm.querySelector(".errorUserInputHeading")) {
+        const currentErrorH5 = userInputForm.querySelector(".errorUserInputHeading");
+        currentErrorH5.remove();
+    }
+
     const userInput = averageTempForm.querySelector("#city-input").value.trim();
     if (!userInput) {
         errorUserInput("#api2-form", "Please provide a city");
