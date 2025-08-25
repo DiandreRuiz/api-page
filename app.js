@@ -42,19 +42,18 @@ const replaceIMG = (newImgUrl, containerID, ImgPlaceholder) => {
     imgContainer.appendChild(newImg);
 };
 
-const errorIMG = (containerID) => {
+const errorIMG = (containerID, errorMessage) => {
     const imgContainer = document.querySelector(containerID);
-    const errorHeading = document.createElement("h1");
-    errorHeading.innerText = "Issue with request please try again!";
+    const errorHeading = document.createElement("h5");
+    errorHeading.innerText = errorMessage;
     errorHeading.classList.add("text-danger");
     imgContainer.appendChild(errorHeading);
-    console.log(imgContainer.children);
 };
 
 dogAPIButton.addEventListener("click", async () => {
     const dogPhotoResponse = await singleAPICall(DOG_IMG_API);
     if (dogPhotoResponse === null) {
-        errorIMG("#api0-container");
+        errorIMG("#api0-container", "Issue getting dog, please try again");
     } else {
         const dogPhotoData = await dogPhotoResponse.json();
         const dogPhotoURL = dogPhotoData.message;
@@ -65,7 +64,7 @@ dogAPIButton.addEventListener("click", async () => {
 catAPIButton.addEventListener("click", async () => {
     const catPhotoResponse = await singleAPICall(CAT_IMG_API);
     if (catPhotoResponse === null) {
-        errorIMG("#api1-container");
+        errorIMG("#api1-container", "Issue getting cat please try again");
     } else {
         const catPhotoData = await catPhotoResponse.json();
         const catPhotoURL = catPhotoData[0].url;
@@ -74,6 +73,14 @@ catAPIButton.addEventListener("click", async () => {
 });
 
 // Weather Apps (2 & 3)
+
+const errorUserInput = (containerID, errorMessage) => {
+    const userInputContainer = document.querySelector(containerID);
+    const errorHeading = document.createElement("h5");
+    errorHeading.innerText = errorMessage;
+    errorHeading.classList.add("text-danger");
+    userInputContainer.appendChild(errorHeading);
+};
 
 const getCitySearch = async (citySearchString) => {
     // Get lat/long for city search string
@@ -137,10 +144,7 @@ const getCurrentTempCitySearch = async (citySearchString) => {
 averageTempForm.addEventListener("submit", async (e) => {
     //TODO: Need error handling for bad city search
     e.preventDefault();
-    
+    const userInput = averageTempForm.querySelector("#city-input").value.trim();
 
-
-
-
-    getCurrentTempCitySearch("Philadelphia");
+    //getCurrentTempCitySearch("Philadelphia");
 });
