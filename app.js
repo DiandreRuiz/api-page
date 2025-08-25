@@ -158,8 +158,8 @@ const getCurrentTempCitySearch = async (citySearchString) => {
 };
 
 averageTempForm.addEventListener("submit", async (e) => {
-    //TODO: Need error handling for bad city search
     e.preventDefault();
+
     // Clear currently displayed errors
     const userInputForm = document.querySelector("#api2-form");
     if (userInputForm.querySelector(".errorUserInputHeading")) {
@@ -167,12 +167,11 @@ averageTempForm.addEventListener("submit", async (e) => {
         currentErrorH5.remove();
     }
 
+    // Check for user input & call API (invalid input handled in getCurrentTempCitySearch)
     const userInput = averageTempForm.querySelector("#city-input").value.trim();
     if (!userInput) {
         errorUserInput("#api2-form", "Please provide a city");
     } else {
         getCurrentTempCitySearch(userInput);
     }
-
-    //getCurrentTempCitySearch("Philadelphia");
 });
