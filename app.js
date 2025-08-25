@@ -17,9 +17,11 @@ const averageTempButton = document.querySelector("#api-2-button");
 const singleAPICall = async (endpointURL) => {
     try {
         const response = await fetch(endpointURL); // Make call to api & await response
+
         return response;
     } catch (err) {
         console.error(`Caught error ${err}`);
+
         return null;
     }
 };
@@ -72,7 +74,9 @@ catAPIButton.addEventListener("click", async () => {
 });
 
 // Weather Apps (2 & 3)
+
 const getCitySearch = async (citySearchString) => {
+    // Get lat/long for city search string
     const baseAPIUrl = "https://geocoding-api.open-meteo.com/v1/search";
     const searchParams = new URLSearchParams({
         baseAPIUrl: baseAPIUrl,
@@ -96,26 +100,33 @@ const getCitySearch = async (citySearchString) => {
     };
 };
 
-const getForecastLatLong = async (latitude, longitude) => {
+const getCurrentTempLatLong = async (latitude, longitude) => {
+    // Get current temp for lat/long
     const baseAPIUrl = "https://api.open-meteo.com/v1/forecast";
     const searchParams = new URLSearchParams({
         baseAPIUrl: baseAPIUrl,
         latitude: latitude,
         longitude: longitude,
+        current: ["temperature_2m"],
+        temperature_unit: "fahrenheit",
+        timezone: "auto",
     });
     const requestURL = `${baseAPIUrl}?${searchParams.toString()}`;
     const forecastResponse = await singleAPICall(requestURL);
     const forecastData = await forecastResponse.json();
-    const firstResult = forecastData.results[0];
-    return firstResult;
+    const currentTemp = forecastData.current.temperature_2m;
+
+    return currentTemp;
 };
 
-const getForecastCitySearch = async (citySearchString) => {
+const getCurrentTempCitySearch = async (citySearchString) => {
+    // Get current temp for city search string
     const citySearchResult = await getCitySearch(citySearchString);
-    const cityForecastResult = await getForecastLatLong(citySearchResult.latitude, citySearchResult.longitude);
+    const cityForecastResult = await getCurrentTempLatLong(citySearchResult.latitude, citySearchResult.longitude);
     console.log(cityForecastResult);
 };
 
 averageTempButton.addEventListener("click", async () => {
-    getForecastCitySearch("Philadelphia");
+    //TODO: Need error handling for bad city search
+    getCurrentTempCitySearch("Philadelphia");
 });
