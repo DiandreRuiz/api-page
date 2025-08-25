@@ -12,7 +12,7 @@ CAT_IMG_API = "https://api.thecatapi.com/v1/images/search";
 // Initialize variables for all API Card buttons
 const dogAPIButton = document.querySelector("#api-0-button");
 const catAPIButton = document.querySelector("#api-1-button");
-const averageTempButton = document.querySelector("#api-2-button");
+const averageTempForm = document.querySelector("#api2-form");
 
 const singleAPICall = async (endpointURL) => {
     try {
@@ -121,12 +121,26 @@ const getCurrentTempLatLong = async (latitude, longitude) => {
 
 const getCurrentTempCitySearch = async (citySearchString) => {
     // Get current temp for city search string
+
+    // Convert user search string to lat/long
     const citySearchResult = await getCitySearch(citySearchString);
-    const cityForecastResult = await getCurrentTempLatLong(citySearchResult.latitude, citySearchResult.longitude);
-    console.log(cityForecastResult);
+    citySearchResultLat = citySearchResult.latitude;
+    citySearchResultLong = citySearchResult.longitude;
+    citySearchResultName = citySearchResult.cityName;
+
+    // Get current temp for converted lat/long
+    const cityForecastResult = await getCurrentTempLatLong(citySearchResultLat, citySearchResultLong);
+
+    return cityForecastResult;
 };
 
-averageTempButton.addEventListener("click", async () => {
+averageTempForm.addEventListener("submit", async (e) => {
     //TODO: Need error handling for bad city search
+    e.preventDefault();
+    
+
+
+
+
     getCurrentTempCitySearch("Philadelphia");
 });
