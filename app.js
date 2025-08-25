@@ -128,6 +128,7 @@ const getCurrentTempLatLong = async (latitude, longitude) => {
         temperature_unit: "fahrenheit",
         timezone: "auto",
     });
+
     const requestURL = `${OPEN_METEO_FORECAST}?${searchParams.toString()}`;
     const forecastResponse = await singleAPICall(requestURL);
     const forecastData = await forecastResponse.json();
@@ -148,10 +149,12 @@ const getCurrentTempCitySearch = async (citySearchString) => {
 
         // Get current temp for converted lat/long
         const cityCurrentTempResult = await getCurrentTempLatLong(citySearchResultLat, citySearchResultLong);
-
         return cityCurrentTempResult;
+        
     } else {
         errorUserInput("#api2-form", `Could not find the city "${citySearchString}". Please try again.`);
+
+        return null;
     }
 };
 
@@ -169,7 +172,5 @@ averageTempForm.addEventListener("submit", async (e) => {
     const userInput = averageTempForm.querySelector("#city-input").value.trim();
     if (!userInput) {
         errorUserInput("#api2-form", "Please provide a city");
-    } else {
-        getCurrentTempCitySearch(userInput);
     }
 });
