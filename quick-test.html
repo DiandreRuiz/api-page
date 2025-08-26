@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quick Function Test</title>
+</head>
+<body>
+    <h1>Quick Function Test</h1>
+    <button onclick="testJoke()">Test Joke Function</button>
+    <div id="result"></div>
+
+    <script type="module">
+        import { getDadJoke } from './js-modules/jokeAPI.js';
+        
+        window.testJoke = async function() {
+            try {
+                const joke = await getDadJoke();
+                document.getElementById('result').innerHTML = `<p>Success: ${joke}</p>`;
+                console.log('Joke:', joke);
+            } catch (error) {
+                document.getElementById('result').innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+                console.error('Error:', error);
+            }
+        };
+    </script>
+</body>
+</html> 

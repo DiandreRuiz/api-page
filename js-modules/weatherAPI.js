@@ -3,11 +3,11 @@ import { singleAPICall } from './apiClient.js';
 import { errorDisplay, displayTemperature } from './uiUtils.js';
 
 // API Endpoints
-const OPEN_METEO_GEOCODING = "https://geocoding-api.open-meteo.com/v1/search";
-const OPEN_METEO_FORECAST = "https://api.open-meteo.com/v1/forecast";
+const OPEN_METEO_GEOCODING_API = "https://geocoding-api.open-meteo.com/v1/search";
+const OPEN_METEO_FORECAST_API = "https://api.open-meteo.com/v1/forecast";
 
 // Weather API Functions
-export const getCitySearch = async (citySearchString) => {
+const getCitySearch = async (citySearchString) => {
     const searchParams = new URLSearchParams({
         name: citySearchString,
         count: 1,
@@ -15,7 +15,7 @@ export const getCitySearch = async (citySearchString) => {
         format: "json",
     });
 
-    const requestURL = `${OPEN_METEO_GEOCODING}?${searchParams.toString()}`;
+    const requestURL = `${OPEN_METEO_GEOCODING_API}?${searchParams.toString()}`;
     const citySearchResponse = await singleAPICall(requestURL);
     const citySearchData = await citySearchResponse.json();
 
@@ -31,7 +31,7 @@ export const getCitySearch = async (citySearchString) => {
     };
 };
 
-export const getCurrentTempLatLong = async (latitude, longitude) => {
+const getCurrentTempLatLong = async (latitude, longitude) => {
     const searchParams = new URLSearchParams({
         latitude: latitude,
         longitude: longitude,
@@ -40,7 +40,7 @@ export const getCurrentTempLatLong = async (latitude, longitude) => {
         timezone: "auto",
     });
 
-    const requestURL = `${OPEN_METEO_FORECAST}?${searchParams.toString()}`;
+    const requestURL = `${OPEN_METEO_FORECAST_API}?${searchParams.toString()}`;
     const forecastResponse = await singleAPICall(requestURL);
     const forecastData = await forecastResponse.json();
     const currentTemp = forecastData.current.temperature_2m;
@@ -52,7 +52,7 @@ export const getCurrentTempLatLong = async (latitude, longitude) => {
     return currentTemp;
 };
 
-export const getUserInputCurrentTemp = async (userInputString) => {
+const getUserInputCurrentTemp = async (userInputString) => {
     if (!userInputString || userInputString === "" || userInputString.length === 0) {
         throw new Error("No city provided by user");
     }

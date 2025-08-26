@@ -35,4 +35,14 @@ export const displayTemperature = (cityName, temperatureF, resultContainerElemen
     resultContainerElement.innerHTML = "";
     resultContainerElement.appendChild(cityHeading);
     resultContainerElement.appendChild(tempHeading);
-}; 
+};
+
+export const displayDadJoke = (dadJoke, resultContainerElement) => {
+    // Build result Element
+    const dadJokeHeading = document.createElement("h5");
+    dadJokeHeading.innerText = dadJoke;
+
+    // Clear prevous results and append result element
+    resultContainerElement.innerHTML = "";
+    resultContainerElement.appendChild(dadJokeHeading);
+};

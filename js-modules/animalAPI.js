@@ -1,21 +1,22 @@
 // Animal Pictures API Module
-import { singleAPICall } from './apiClient.js';
-import { replaceIMG, errorDisplay } from './uiUtils.js';
+import { singleAPICall } from "./apiClient.js";
+import { replaceIMG, errorDisplay } from "./uiUtils.js";
 
 // API Endpoints
 const DOG_IMG_API = "https://dog.ceo/api/breeds/image/random";
 const CAT_IMG_API = "https://api.thecatapi.com/v1/images/search";
 
 // Animal API Functions
-export const getDogImage = async () => {
+const getDogImage = async () => {
     const dogPhotoResponse = await singleAPICall(DOG_IMG_API);
     const dogPhotoData = await dogPhotoResponse.json();
     return dogPhotoData.message;
 };
 
-export const getCatImage = async () => {
+const getCatImage = async () => {
     const catPhotoResponse = await singleAPICall(CAT_IMG_API);
     const catPhotoData = await catPhotoResponse.json();
+    // response format is an aray of results
     return catPhotoData[0].url;
 };
 
@@ -43,4 +44,4 @@ export const setupAnimalAPIHandlers = () => {
             errorDisplay("#api1-container", "Issue getting cat please try again");
         }
     });
-}; 
+};
