@@ -22,15 +22,20 @@ const averageTempForm = document.querySelector("#api2-form");
 
 // General API Call Function
 const singleAPICall = async (endpointURL) => {
-    try {
-        const response = await fetch(endpointURL); // Make call to api & await response
-
-        return response;
-    } catch (err) {
-        console.error(`Caught error ${err}`);
-
-        return null;
+    const response = await fetch(endpointURL); // Make call to api & await response
+    if (!response.ok) {
+        throw new Error(`API call failed: ${response.status}`); // THROW
     }
+    return response;
+};
+
+const errorDisplay = (containerID, errorMessage) => {
+    const userInputContainer = document.querySelector(containerID);
+    const errorHeading = document.createElement("h5");
+    errorHeading.innerText = errorMessage;
+    errorHeading.classList.add("text-danger");
+    errorHeading.classList.add("errorUserInputHeading");
+    userInputContainer.appendChild(errorHeading);
 };
 
 // Random Image Generators (0 & 1)
@@ -49,46 +54,31 @@ const replaceIMG = (newImgUrl, containerID, ImgPlaceholder) => {
     imgContainer.appendChild(newImg);
 };
 
-const errorIMG = (containerID, errorMessage) => {
-    const imgContainer = document.querySelector(containerID);
-    const errorHeading = document.createElement("h5");
-    errorHeading.innerText = errorMessage;
-    errorHeading.classList.add("text-danger");
-    imgContainer.appendChild(errorHeading);
-};
-
 dogAPIButton.addEventListener("click", async () => {
-    const dogPhotoResponse = await singleAPICall(DOG_IMG_API);
-    if (dogPhotoResponse === null) {
-        errorIMG("#api0-container", "Issue getting dog, please try again");
-    } else {
+    try {
+        const dogPhotoResponse = await singleAPICall(DOG_IMG_API);
         const dogPhotoData = await dogPhotoResponse.json();
         const dogPhotoURL = dogPhotoData.message;
         replaceIMG(dogPhotoURL, "#api0-container", "Random Dog Photo");
+    } catch (error) {
+        console.error(`Dog API error: ${error}`);
+        errorDisplay("#api0-container", "Issue getting dog, please try again");
     }
 });
 
 catAPIButton.addEventListener("click", async () => {
-    const catPhotoResponse = await singleAPICall(CAT_IMG_API);
-    if (catPhotoResponse === null) {
-        errorIMG("#api1-container", "Issue getting cat please try again");
-    } else {
+    try {
+        const catPhotoResponse = await singleAPICall(CAT_IMG_API);
         const catPhotoData = await catPhotoResponse.json();
         const catPhotoURL = catPhotoData[0].url;
         replaceIMG(catPhotoURL, "#api1-container", "Random Cat Photo");
+    } catch (error) {
+        console.error(`Cat API Error: ${error}`);
+        errorDisplay("#api1-container", "Issue getting cat please try again");
     }
 });
 
 // Weather Apps (2 & 3)
-
-const errorUserInput = (containerID, errorMessage) => {
-    const userInputContainer = document.querySelector(containerID);
-    const errorHeading = document.createElement("h5");
-    errorHeading.innerText = errorMessage;
-    errorHeading.classList.add("text-danger");
-    errorHeading.classList.add("errorUserInputHeading");
-    userInputContainer.appendChild(errorHeading);
-};
 
 const getCitySearch = async (citySearchString) => {
     // Get lat/long for city search string
@@ -98,25 +88,29 @@ const getCitySearch = async (citySearchString) => {
         language: "en",
         format: "json",
     });
+
     const requestURL = `${OPEN_METEO_GEOCODING}?${searchParams.toString()}`;
-    console.log(requestURL);
+
+    // Error handling will bubble up from these calls
     const citySearchResponse = await singleAPICall(requestURL);
     const citySearchData = await citySearchResponse.json();
 
-    if ("results" in citySearchData) {
-        const firstResult = citySearchData.results[0];
-        const latitude = firstResult.latitude;
-        const longitude = firstResult.longitude;
-        const cityName = firstResult.name;
-
-        return {
-            cityName: cityName,
-            latitude: latitude,
-            longitude: longitude,
-        };
-    } else {
-        return null;
+    // Check if there are no results for their search
+    if (!citySearchData.results || citySearchData.results.length === 0) {
+        errorDisplay("api2-form", `Could not identify city input: ${citySearchString}`);
+        throw new Error(`City ${citySearchString} not found.`);
     }
+
+    const firstResult = citySearchData.results[0];
+    const latitude = firstResult.latitude;
+    const longitude = firstResult.longitude;
+    const cityName = firstResult.name;
+
+    return {
+        cityName: cityName,
+        latitude: latitude,
+        longitude: longitude,
+    };
 };
 
 const getCurrentTempLatLong = async (latitude, longitude) => {
@@ -130,32 +124,37 @@ const getCurrentTempLatLong = async (latitude, longitude) => {
     });
 
     const requestURL = `${OPEN_METEO_FORECAST}?${searchParams.toString()}`;
-    const forecastResponse = await singleAPICall(requestURL);
-    const forecastData = await forecastResponse.json();
+    const forecastResponse = await singleAPICall(requestURL); // Allow errors to bubble up
+    const forecastData = await forecastResponse.json(); // Allow errors to bubble up
     const currentTemp = forecastData.current.temperature_2m;
+
+    if (!currentTemp) {
+        errorDisplay("apit2-form", "Internal issue with API please try again.");
+        throw new Error(`Error getting temp from Lat / Long: ${searchParams.latitude} & ${searchParams.longitude}`);
+    }
 
     return currentTemp;
 };
 
-const getCurrentTempCitySearch = async (citySearchString) => {
-    // Get current temp for city search string
+const userInputCurrentTemp = async () => {
+    // COMBINE BOTH HELPER FUNCTIONS FOR FINAL RESULT FROM USER INPUT //
+
+    const userInputString = averageTempForm.querySelector("#city-input").value.trim();
+    if (!userInput) {
+        errorDisplay("#api2-form", "Please provide a city");
+        throw new Error("No city provided by user");
+    }
 
     // Convert user search string to lat/long
-    const citySearchResult = await getCitySearch(citySearchString);
-    if (citySearchResult !== null) {
-        citySearchResultLat = citySearchResult.latitude;
-        citySearchResultLong = citySearchResult.longitude;
-        citySearchResultName = citySearchResult.cityName;
+    const citySearchResult = await getCitySearch(userInputString); // Allow errors to bubble up
+    citySearchResultLat = citySearchResult.latitude;
+    citySearchResultLong = citySearchResult.longitude;
+    citySearchResultName = citySearchResult.cityName;
 
-        // Get current temp for converted lat/long
-        const cityCurrentTempResult = await getCurrentTempLatLong(citySearchResultLat, citySearchResultLong);
-        return cityCurrentTempResult;
-        
-    } else {
-        errorUserInput("#api2-form", `Could not find the city "${citySearchString}". Please try again.`);
+    // Get current temperature of this lat/long
+    const cityCurrentTempResult = await getCurrentTempLatLong(citySerachResultLat, citySearchResultLong); //Allow errors to bubble up
 
-        return null;
-    }
+    return cityCurrentTempResult;
 };
 
 averageTempForm.addEventListener("submit", async (e) => {
@@ -169,8 +168,4 @@ averageTempForm.addEventListener("submit", async (e) => {
     }
 
     // Check for user input & call API (invalid input handled in getCurrentTempCitySearch)
-    const userInput = averageTempForm.querySelector("#city-input").value.trim();
-    if (!userInput) {
-        errorUserInput("#api2-form", "Please provide a city");
-    }
 });
