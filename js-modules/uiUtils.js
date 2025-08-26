@@ -1,0 +1,38 @@
+// Shared UI utilities
+export const errorDisplay = (containerID, errorMessage) => {
+    const userInputContainer = document.querySelector(containerID);
+    const errorHeading = document.createElement("h5");
+    errorHeading.innerText = errorMessage;
+    errorHeading.classList.add("text-danger");
+    errorHeading.classList.add("errorUserInputHeading");
+    userInputContainer.appendChild(errorHeading);
+};
+
+export const replaceIMG = (newImgUrl, containerID, imgPlaceholder) => {
+    // Create new <img>
+    const newImg = document.createElement("img");
+    newImg.src = newImgUrl;
+    newImg.placeholder = imgPlaceholder;
+    newImg.style.maxWidth = "100%";
+
+    // Clear old <img> if there is one
+    const imgContainer = document.querySelector(containerID);
+    imgContainer.innerHTML = "";
+
+    // Append new <img> to container
+    imgContainer.appendChild(newImg);
+};
+
+export const displayTemperature = (cityName, temperatureF, resultContainerElement) => {
+    // Build result elements
+    const degreesSymbol = "\u00B0";
+    const cityHeading = document.createElement("h1");
+    const tempHeading = document.createElement("h2");
+    cityHeading.innerText = `${cityName}`;
+    tempHeading.innerText = `${temperatureF}${degreesSymbol}F`;
+
+    // Clear previous results and append result elements
+    resultContainerElement.innerHTML = "";
+    resultContainerElement.appendChild(cityHeading);
+    resultContainerElement.appendChild(tempHeading);
+}; 
