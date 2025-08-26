@@ -147,16 +147,12 @@ const userInputCurrentTemp = async (userInputString) => {
     citySearchResultName = citySearchResult.cityName;
 
     // Get current temperature of this lat/long
-    const cityCurrentTempResult = await getCurrentTempLatLong(citySerachResultLat, citySearchResultLong); //Allow errors to bubble up
+    const cityCurrentTempResult = await getCurrentTempLatLong(citySearchResultLat, citySearchResultLong); //Allow errors to bubble up
 
-    return cityCurrentTempResult;
+    return { temperatureF: cityCurrentTempResult, cityName: citySearchResultName };
 };
 
-const displayTemperature = (cityName, temperatureF) => {
-    // Clear old result
-    const api2Container = document.querySelector("#api2-container");
-    api2Container.innerHTML = "";
-
+const displayTemperature = (cityName, temperatureF, resultContainerElement) => {
     // Build result elements
     const degreesSymbol = "\u00B0";
     const cityHeading = document.createElement("h1");
@@ -165,6 +161,8 @@ const displayTemperature = (cityName, temperatureF) => {
     tempHeading.innerText = `${temperatureF}${degreesSymbol}F`;
 
     // Append result elements
+    resultContainerElement.appendChild(cityHeading);
+    resultContainerElement.appendChild(tempHeading);
 };
 
 averageTempForm.addEventListener("submit", async (e) => {
@@ -177,8 +175,16 @@ averageTempForm.addEventListener("submit", async (e) => {
             currentErrorH5.remove();
         }
 
+        // Clear currently display results
+        const api2Container = document.querySelector("#api2-container");
+        api2Container.innerHTML = "";
+
+        // Calculate temperature and display results
         const userInputString = averageTempForm.querySelector("#city-input").value.trim();
         const userInputStringTempResult = await userInputCurrentTemp(userInputString);
+        const resultCityName = userInputStringTempResult.cityName;
+        const resultTempF = userInputStringTempResult.temperatureF;
+        displayTemperature(resultCityName, resultTempF, api2Container);
     } catch (error) {
         console.error(`Error looking up temperature: ${error}`);
         errorDisplay("#api2-form", error.message);
