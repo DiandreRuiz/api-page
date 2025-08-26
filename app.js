@@ -97,8 +97,7 @@ const getCitySearch = async (citySearchString) => {
 
     // Check if there are no results for their search
     if (!citySearchData.results || citySearchData.results.length === 0) {
-        errorDisplay("api2-form", `Could not identify city input: ${citySearchString}`);
-        throw new Error(`City ${citySearchString} not found.`);
+        throw new Error(`City "${citySearchString}" not found.`);
     }
 
     const firstResult = citySearchData.results[0];
@@ -129,19 +128,15 @@ const getCurrentTempLatLong = async (latitude, longitude) => {
     const currentTemp = forecastData.current.temperature_2m;
 
     if (!currentTemp) {
-        errorDisplay("apit2-form", "Internal issue with API please try again.");
         throw new Error(`Error getting temp from Lat / Long: ${searchParams.latitude} & ${searchParams.longitude}`);
     }
 
     return currentTemp;
 };
 
-const userInputCurrentTemp = async () => {
+const userInputCurrentTemp = async (userInputString) => {
     // COMBINE BOTH HELPER FUNCTIONS FOR FINAL RESULT FROM USER INPUT //
-
-    const userInputString = averageTempForm.querySelector("#city-input").value.trim();
-    if (!userInput) {
-        errorDisplay("#api2-form", "Please provide a city");
+    if (!userInputString || userInputString === "" || userInputString.length === 0) {
         throw new Error("No city provided by user");
     }
 
@@ -157,15 +152,39 @@ const userInputCurrentTemp = async () => {
     return cityCurrentTempResult;
 };
 
+const displayTemperature = (cityName, temperatureF) => {
+    // Clear old result
+    const api2Container = document.querySelector("#api2-container");
+    api2Container.innerHTML = "";
+
+    // Build result elements
+    const degreesSymbol = "\u00B0";
+    const cityHeading = document.createElement("h1");
+    const tempHeading = document.createElement("h2");
+    cityHeading.innerText = `${cityName}`;
+    tempHeading.innerText = `${temperatureF}${degreesSymbol}F`;
+
+    // Append result elements
+};
+
 averageTempForm.addEventListener("submit", async (e) => {
     e.preventDefault();
+    try {
+        // Clear currently displayed errors
+        const userInputForm = document.querySelector("#api2-form");
+        if (userInputForm.querySelector(".errorUserInputHeading")) {
+            const currentErrorH5 = userInputForm.querySelector(".errorUserInputHeading");
+            currentErrorH5.remove();
+        }
+
+        const userInputString = averageTempForm.querySelector("#city-input").value.trim();
+        const userInputStringTempResult = await userInputCurrentTemp(userInputString);
+    } catch (error) {
+        console.error(`Error looking up temperature: ${error}`);
+        errorDisplay("#api2-form", error.message);
+    }
 
     // Clear currently displayed errors
-    const userInputForm = document.querySelector("#api2-form");
-    if (userInputForm.querySelector(".errorUserInputHeading")) {
-        const currentErrorH5 = userInputForm.querySelector(".errorUserInputHeading");
-        currentErrorH5.remove();
-    }
 
     // Check for user input & call API (invalid input handled in getCurrentTempCitySearch)
 });
