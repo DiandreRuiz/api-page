@@ -5,6 +5,7 @@ export const displayError = (containerID, errorMessage) => {
     errorHeading.innerText = errorMessage;
     errorHeading.classList.add("text-danger");
     errorHeading.classList.add("errorUserInputHeading");
+    userInputContainer.innerHTML = "";
     userInputContainer.appendChild(errorHeading);
 };
 
@@ -56,9 +57,9 @@ export const displayDadJoke = (dadJoke, resultContainerElement) => {
 export const displayMovieList = (movieList, resultContainerElement) => {
     // Build result Element
     const movieListUl = document.createElement("ul");
-    movieListUl.style.textAlign = "left";
     movieListUl.style.textDecoration = "none";
     movieListUl.style.listStyleType = "none";
+    movieListUl.classList.add("text-center", "list-inline");
     movieList.forEach((movieName) => {
         // Add all movie names to <ul> as <li>
         const liElement = document.createElement("li");

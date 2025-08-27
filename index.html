@@ -9,10 +9,10 @@
         <title>API Page</title>
     </head>
     <body class="bg-light">
-        <header class="container-fluid text-center p-3" id="header">
+        <header class="container-fluid text-center p-3 mt-2" id="header">
             <div class="row">
                 <div class="col">
-                    <div class="container-fluid card-heading bg-warning m-0 rounded-4 p-2 mb-2 w-25 mx-auto" id="title">
+                    <div class="container-fluid card-heading bg-warning m-0 rounded-4 p-2 w-25 mx-auto" id="title">
                         <h1 class="fs-7">Fun APIs</h1>
                     </div>
                 </div>
@@ -60,9 +60,12 @@
                     <div class="container-fluid card-heading bg-warning m-0 rounded-top-4 p-2 mb-2">
                         <h5 class="card-title">Now Playing API</h5>
                     </div>
-                    <p class="card-text">See a list of movies currently in theatres</p>
+                    <p class="card-text">See a list of movies currently in theatres within a country</p>
                     <div class="container" id="api4-container"></div>
-                    <button id="api-4-button" class="btn btn-primary d-block mx-auto card-bottom-btn my-3 mt-auto custom-hover">Get Current Films</button>
+                    <form class="form" id="api4-form">
+                        <input type="text" id="country-input" placeholder="Country code i.e. 'US'" class="form-control mb-2" />
+                        <button type="submit" id="api-4-button" class="btn btn-primary d-block mx-auto card-bottom-btn my-3 custom-hover">Get Movies</button>
+                    </form>
                 </div>
             </div>
         </div>

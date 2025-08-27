@@ -9,13 +9,18 @@ const getAPIKey = async () => {
     return data.TMDB_API_KEY;
 };
 
-const TMDB_NOWPLAYING_ENDPOINT = "https://api.themoviedb.org/3/movie/now_playing?region=US";
+const TMDB_NOWPLAYING_ENDPOINT = "https://api.themoviedb.org/3/movie/now_playing?region=";
 
 // Function that returns the names of movies currently in theatres
-export const getNowPlayingMovies = async () => {
+export const getNowPlayingMovies = async (countryCode) => {
+    // Ensure Input
+    if (!countryCode || countryCode === "" || countryCode.length === 0) {
+        throw new Error("No country code provided by user");
+    }
+
     // Get results from API
     const apiKey = await getAPIKey();
-    const response = await singleAPICall(TMDB_NOWPLAYING_ENDPOINT, {
+    const response = await singleAPICall(`${TMDB_NOWPLAYING_ENDPOINT}${countryCode}`, {
         Authorization: `Bearer ${apiKey}`,
         accept: "application/json",
     });
@@ -45,11 +50,23 @@ export const getNowPlayingMovies = async () => {
 
 // Event Handlers
 export const setupTMDBAPIHandlers = () => {
-    const nowPlayingButton = document.querySelector("#api-4-button");
-    nowPlayingButton.addEventListener("click", async () => {
+    const nowPlayingForm = document.querySelector("#api4-form");
+
+    nowPlayingForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
         try {
+            // Clear currently displayed errors
+            if (nowPlayingForm.querySelector(".errorUserInputHeading")) {
+                const currentErrorH5 = nowPlayingForm.querySelector(".errorUserInputHeading");
+                currentErrorH5.remove();
+            }
+
+            // Get movie list and display results
+            const UserInputCountryCode = nowPlayingForm.querySelector("#country-input").value.trim();
             const api4Container = document.querySelector("#api4-container");
-            const movieList = await getNowPlayingMovies();
+            const movieList = await getNowPlayingMovies(UserInputCountryCode);
+
             displayMovieList(movieList, api4Container);
         } catch (error) {
             console.error(`Error getting now playing movie list: ${error}`);

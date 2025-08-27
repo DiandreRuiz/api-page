@@ -53,6 +53,7 @@ const getCurrentTempLatLong = async (latitude, longitude) => {
 };
 
 const getUserInputCurrentTemp = async (userInputString) => {
+    // Ensure Input
     if (!userInputString || userInputString === "" || userInputString.length === 0) {
         throw new Error("No city provided by user");
     }
@@ -75,21 +76,20 @@ export const setupWeatherAPIHandlers = () => {
 
         try {
             // Clear currently displayed errors
-            const userInputForm = document.querySelector("#api2-form");
-            if (userInputForm.querySelector(".errorUserInputHeading")) {
-                const currentErrorH5 = userInputForm.querySelector(".errorUserInputHeading");
+            if (averageTempForm.querySelector(".errorUserInputHeading")) {
+                const currentErrorH5 = averageTempForm.querySelector(".errorUserInputHeading");
                 currentErrorH5.remove();
             }
 
             // Calculate temperature and display results
-            const api2Container = document.querySelector("#api2-container");
             const userInputString = averageTempForm.querySelector("#city-input").value.trim();
+            const api2Container = document.querySelector("#api2-container");
             const userInputStringTempResult = await getUserInputCurrentTemp(userInputString);
 
             displayTemperature(userInputStringTempResult.cityName, userInputStringTempResult.temperatureF, api2Container);
         } catch (error) {
             console.error(`Error looking up temperature: ${error}`);
-            displayError("#api2-form", error.message);
+            displayError("#api2-container", error.message);
         }
     });
 };
