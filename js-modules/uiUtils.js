@@ -35,21 +35,22 @@ export const displayTemperature = (confidentMatch, cityName, stateOrProvince, co
     const stateOrProvinceHeading = document.createElement("h5");
     const countryHeading = document.createElement("h6");
     const tempHeading = document.createElement("h2");
+
+    // Only add if not a confident match from the API
     let notSureHeading = null;
-    console.log(confidentMatch);
     if (!confidentMatch) {
         notSureHeading = document.createElement("h5");
         notSureHeading.innerText = "(Not a confident match)";
-        notSureHeading.classList.add("text-warning");
-    } 
-    
+        notSureHeading.classList.add("text-danger");
+    }
+
     // Add Bootstrap margin classes to headings
     countryHeading.classList.add("mb-3");
     tempHeading.classList.add("mt-3");
-    
+
     cityHeading.innerText = `${cityName}`;
     tempHeading.innerText = `${temperatureF}${degreesSymbol}F`;
-    
+
     if (stateOrProvince && stateOrProvince !== "") {
         stateOrProvinceHeading.innerText = `${stateOrProvince}`;
     }

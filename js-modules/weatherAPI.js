@@ -93,7 +93,7 @@ export const setupWeatherAPIHandlers = () => {
             const api2Container = document.querySelector("#api2-container");
             const userInputStringTempResult = await getUserInputCurrentTemp(userInputString);
 
-            const confidentMatch = false;
+            let confidentMatch = false;
             if (userInputStringTempResult.cityName === userInputString) {
                 confidentMatch = true;
             }
