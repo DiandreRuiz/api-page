@@ -11,7 +11,7 @@ const getAPIKey = async () => {
 };
 
 // Function that returns the names of movies currently in theatres
-export const getTMDBResponse = async () => {
+export const getNowPlayingResults = async () => {
     // Get movie ID's
     const apiKey = await getAPIKey();
     const response = await singleAPICall(TMDB_ENDPOINT, {
@@ -24,8 +24,36 @@ export const getTMDBResponse = async () => {
         throw new Error("Could not retrieve results from TMDB API");
     }
 
-    // Look up movie ID's
-    const movieNames = [];
+    // Extract movie ID's and return
+    const nowPlayingMovieIDs = [];
+    nowPlayingResults.forEach((result) => {
+        const adultResultCount = 0;
+        if (!result.adult) {
+            nowPlayingResults.push(result.id);
+        } else {
+            adultResultCount++;
+        }
+        console.log(`Filtered ${adultResultCount} results for adult material`);
+    });
+
+    return nowPlayingMovieIDs;
 };
 
 // Function that sets up event handler for the button and is exported
+export const getNowPlayingMovieNames = async () => {
+    const nowPlayingResults = await getNowPlayingResults();
+
+    // Look up movie ID's
+    const movieNames = [];
+    nowPlayingResults.forEach((result) => {
+        const adultResultCount = 0;
+        if (!result.adult) {
+            movieNames.push(result.id);
+        } else {
+            adultResultCount++;
+        }
+        console.log(`Filtered ${adultResultCount} results for adult material`);
+    });
+
+    console.log(movieNames);
+};
