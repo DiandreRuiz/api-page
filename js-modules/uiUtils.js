@@ -28,20 +28,42 @@ export const replaceIMG = (newImgUrl, containerID, imgPlaceholder) => {
     imgContainer.appendChild(newImg);
 };
 
-export const displayTemperature = (cityName, temperatureF, resultContainerElement) => {
+export const displayTemperature = (confidentMatch, cityName, stateOrProvince, countryName, temperatureF, resultContainerElement) => {
     // Build result elements
     const degreesSymbol = "\u00B0";
     const cityHeading = document.createElement("h1");
+    const stateOrProvinceHeading = document.createElement("h5");
+    const countryHeading = document.createElement("h6");
     const tempHeading = document.createElement("h2");
+    let notSureHeading = null;
+    console.log(confidentMatch);
+    if (!confidentMatch) {
+        notSureHeading = document.createElement("h5");
+        notSureHeading.innerText = "(Not a confident match)";
+        notSureHeading.classList.add("text-warning");
+    } 
+    
     // Add Bootstrap margin classes to headings
-    tempHeading.classList.add("mb-3");
+    countryHeading.classList.add("mb-3");
     tempHeading.classList.add("mt-3");
+    
     cityHeading.innerText = `${cityName}`;
     tempHeading.innerText = `${temperatureF}${degreesSymbol}F`;
-
+    
+    if (stateOrProvince && stateOrProvince !== "") {
+        stateOrProvinceHeading.innerText = `${stateOrProvince}`;
+    }
+    if (countryName && countryName !== "") {
+        countryHeading.innerText = `${countryName}`;
+    }
     // Clear previous results and append result elements
     resultContainerElement.innerHTML = "";
+    if (notSureHeading) {
+        resultContainerElement.appendChild(notSureHeading);
+    }
     resultContainerElement.appendChild(cityHeading);
+    resultContainerElement.appendChild(stateOrProvinceHeading);
+    resultContainerElement.appendChild(countryHeading);
     resultContainerElement.appendChild(tempHeading);
 };
 

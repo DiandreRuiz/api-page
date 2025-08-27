@@ -24,7 +24,12 @@ const getCitySearch = async (citySearchString) => {
     }
 
     const firstResult = citySearchData.results[0];
+
+    console.log(firstResult);
+
     return {
+        countryName: firstResult.country,
+        stateOrProvince: firstResult.admin1,
         cityName: firstResult.name,
         latitude: firstResult.latitude,
         longitude: firstResult.longitude,
@@ -64,6 +69,8 @@ const getUserInputCurrentTemp = async (userInputString) => {
     return {
         temperatureF: cityCurrentTempResult,
         cityName: citySearchResult.cityName,
+        countryName: citySearchResult.countryName,
+        stateOrProvince: citySearchResult.stateOrProvince,
     };
 };
 
@@ -86,7 +93,19 @@ export const setupWeatherAPIHandlers = () => {
             const api2Container = document.querySelector("#api2-container");
             const userInputStringTempResult = await getUserInputCurrentTemp(userInputString);
 
-            displayTemperature(userInputStringTempResult.cityName, userInputStringTempResult.temperatureF, api2Container);
+            const confidentMatch = false;
+            if (userInputStringTempResult.cityName === userInputString) {
+                confidentMatch = true;
+            }
+
+            displayTemperature(
+                confidentMatch,
+                userInputStringTempResult.cityName,
+                userInputStringTempResult.stateOrProvince,
+                userInputStringTempResult.countryName,
+                userInputStringTempResult.temperatureF,
+                api2Container);
+            
         } catch (error) {
             console.error(`Error looking up temperature: ${error}`);
             displayError("#api2-container", error.message);
