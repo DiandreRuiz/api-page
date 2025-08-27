@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=TASA+Explorer:wght@400..800&display=swap');
+
+:root{
+    --font-family: 'TASA Explorer', sans-serif;
+}
+
+.api-card {
+    min-height: 200px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s; 
+}
+
+.api-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+#api2-form {
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+#header{ 
+    background-color: #6c757d; /* Bootstrap secondary color */
+}

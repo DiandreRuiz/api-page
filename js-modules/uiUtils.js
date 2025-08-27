@@ -14,9 +14,12 @@ export const replaceIMG = (newImgUrl, containerID, imgPlaceholder) => {
     newImg.src = newImgUrl;
     newImg.placeholder = imgPlaceholder;
     newImg.style.maxWidth = "100%";
+    newImg.classList.add("rounded-4");
+    newImg.style.border = "solid black 0.8";
 
     // Clear old <img> if there is one
     const imgContainer = document.querySelector(containerID);
+    imgContainer.classList.add("mb-3");
     imgContainer.innerHTML = "";
 
     // Append new <img> to container
@@ -28,6 +31,9 @@ export const displayTemperature = (cityName, temperatureF, resultContainerElemen
     const degreesSymbol = "\u00B0";
     const cityHeading = document.createElement("h1");
     const tempHeading = document.createElement("h2");
+    // Add Bootstrap margin classes to headings
+    tempHeading.classList.add("mb-3");
+    tempHeading.classList.add("mt-3");
     cityHeading.innerText = `${cityName}`;
     tempHeading.innerText = `${temperatureF}${degreesSymbol}F`;
 
