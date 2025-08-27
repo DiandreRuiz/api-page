@@ -5,21 +5,35 @@
 }
 
 .api-card {
-    min-height: 200px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s; 
+    transition: transform 0.2s;
 }
-
 .api-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
+.custom-hover {
+  transition: background-color 0.5s ease; /* smooth over 0.5s */
+}
+
+.custom-hover:hover {
+  background-color: rgb(0, 208, 255); /* a different shade (Bootstrap purple) */
+  border: solid rgb(0, 208, 255);
+}
+
+#title {
+    transition: transform 1s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+#title:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    
+}
+
+
 #api2-form {
     max-width: 300px;
     margin: 0 auto;
-}
-
-#header{ 
-    background-color: #6c757d; /* Bootstrap secondary color */
 }
