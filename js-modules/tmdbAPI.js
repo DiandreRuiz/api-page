@@ -1,7 +1,9 @@
 import { singleAPICall } from "./apiClient.js";
 import { errorDisplay } from "./uiUtils.js";
 
-const TMDB_ENDPOINT = "https://api.themoviedb.org/3/movie/now_playing";
+const TMDB_NOWPLAYING_ENDPOINT = "https://api.themoviedb.org/3/movie/now_playing";
+const TMDB_MOVIELOOKUP_ENDPOINT = 
+const apiKey = await getAPIKey();
 
 // Load in API creds
 const getAPIKey = async () => {
@@ -13,47 +15,43 @@ const getAPIKey = async () => {
 // Function that returns the names of movies currently in theatres
 export const getNowPlayingResults = async () => {
     // Get movie ID's
-    const apiKey = await getAPIKey();
-    const response = await singleAPICall(TMDB_ENDPOINT, {
+    const response = await singleAPICall(TMDB_NOWPLAYING_ENDPOINT, {
         Authorization: `Bearer ${apiKey}`,
         accept: "application/json",
     });
     const data = await response.json();
     const nowPlayingResults = data.results;
+
     if (!nowPlayingResults.length > 0) {
         throw new Error("Could not retrieve results from TMDB API");
     }
 
-    // Extract movie ID's and return
-    const nowPlayingMovieIDs = [];
+    // Extract movie titles, filter adult movies and return
+    const nowPlayingMovieTitles = [];
     nowPlayingResults.forEach((result) => {
         const adultResultCount = 0;
         if (!result.adult) {
-            nowPlayingResults.push(result.id);
+            nowPlayingMovieTitles.push(result.original_title);
         } else {
             adultResultCount++;
         }
         console.log(`Filtered ${adultResultCount} results for adult material`);
     });
 
-    return nowPlayingMovieIDs;
+    return nowPlayingMovieTitles;
 };
 
 // Function that sets up event handler for the button and is exported
 export const getNowPlayingMovieNames = async () => {
-    const nowPlayingResults = await getNowPlayingResults();
+    // Get movie IDs
+    const nowPlayingMovieIDs = await getNowPlayingResults();
 
-    // Look up movie ID's
-    const movieNames = [];
-    nowPlayingResults.forEach((result) => {
-        const adultResultCount = 0;
-        if (!result.adult) {
-            movieNames.push(result.id);
-        } else {
-            adultResultCount++;
-        }
-        console.log(`Filtered ${adultResultCount} results for adult material`);
+    const nowPlayingMovieNames = [];
+    nowPlayingMovieIDs.forEach(async (movieID) => {
+        const response = await singleAPICall(TMDB_NOWPLAYING_ENDPOINT, {
+            Authorization: `Bearer ${apiKey}`,
+            accept: "application/json",
+        });
     });
-
     console.log(movieNames);
 };
