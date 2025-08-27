@@ -5,6 +5,7 @@ export const displayError = (containerID, errorMessage) => {
     errorHeading.innerText = errorMessage;
     errorHeading.classList.add("text-danger");
     errorHeading.classList.add("errorUserInputHeading");
+    errorHeading.classList.add("mb-3");
     userInputContainer.innerHTML = "";
     userInputContainer.appendChild(errorHeading);
 };
