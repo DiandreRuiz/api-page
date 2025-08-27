@@ -1,5 +1,5 @@
 // Shared UI utilities
-export const errorDisplay = (containerID, errorMessage) => {
+export const displayError = (containerID, errorMessage) => {
     const userInputContainer = document.querySelector(containerID);
     const errorHeading = document.createElement("h5");
     errorHeading.innerText = errorMessage;
@@ -45,4 +45,18 @@ export const displayDadJoke = (dadJoke, resultContainerElement) => {
     // Clear prevous results and append result element
     resultContainerElement.innerHTML = "";
     resultContainerElement.appendChild(dadJokeHeading);
+};
+
+export const displayMovieList = (movieList, resultContainerElement) => {
+    // Build result Element
+    const movieListUl = document.createElement("ul");
+    movieList.forEach((movieName) => {
+        // Add all movie names to <ul> as <li>
+        const liElement = document.createElement("li");
+        liElement.innerText = movieName;
+        movieListUl.appendChild(liElement);
+    });
+    // Clear prevous results and append result element
+    resultContainerElement.innerHTML = "";
+    resultContainerElement.appendChild(movieListUl);
 };

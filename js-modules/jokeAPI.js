@@ -1,6 +1,6 @@
 import { singleAPICall } from "./apiClient.js";
 import { displayDadJoke } from "./uiUtils.js";
-import { errorDisplay } from "./uiUtils.js";
+import { displayError } from "./uiUtils.js";
 
 const DAD_JOKE_API = "https://icanhazdadjoke.com/";
 
@@ -22,7 +22,7 @@ export const setupDadJokeAPIHandler = () => {
             displayDadJoke(dadJoke, api3Container);
         } catch (error) {
             console.error(`Error getting a dad joke: ${error}`);
-            errorDisplay("#api3-container", error.message);
+            displayError("#api3-container", error.message);
         }
     });
 };

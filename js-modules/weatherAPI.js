@@ -1,6 +1,6 @@
 // Weather API Module
-import { singleAPICall } from './apiClient.js';
-import { errorDisplay, displayTemperature } from './uiUtils.js';
+import { singleAPICall } from "./apiClient.js";
+import { displayError, displayTemperature } from "./uiUtils.js";
 
 // API Endpoints
 const OPEN_METEO_GEOCODING_API = "https://geocoding-api.open-meteo.com/v1/search";
@@ -58,14 +58,11 @@ const getUserInputCurrentTemp = async (userInputString) => {
     }
 
     const citySearchResult = await getCitySearch(userInputString);
-    const cityCurrentTempResult = await getCurrentTempLatLong(
-        citySearchResult.latitude, 
-        citySearchResult.longitude
-    );
+    const cityCurrentTempResult = await getCurrentTempLatLong(citySearchResult.latitude, citySearchResult.longitude);
 
-    return { 
-        temperatureF: cityCurrentTempResult, 
-        cityName: citySearchResult.cityName 
+    return {
+        temperatureF: cityCurrentTempResult,
+        cityName: citySearchResult.cityName,
     };
 };
 
@@ -75,7 +72,7 @@ export const setupWeatherAPIHandlers = () => {
 
     averageTempForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-        
+
         try {
             // Clear currently displayed errors
             const userInputForm = document.querySelector("#api2-form");
@@ -88,16 +85,11 @@ export const setupWeatherAPIHandlers = () => {
             const api2Container = document.querySelector("#api2-container");
             const userInputString = averageTempForm.querySelector("#city-input").value.trim();
             const userInputStringTempResult = await getUserInputCurrentTemp(userInputString);
-            
-            displayTemperature(
-                userInputStringTempResult.cityName, 
-                userInputStringTempResult.temperatureF, 
-                api2Container
-            );
-            
+
+            displayTemperature(userInputStringTempResult.cityName, userInputStringTempResult.temperatureF, api2Container);
         } catch (error) {
             console.error(`Error looking up temperature: ${error}`);
-            errorDisplay("#api2-form", error.message);
+            displayError("#api2-form", error.message);
         }
     });
-}; 
+};

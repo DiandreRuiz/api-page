@@ -1,6 +1,6 @@
 // Animal Pictures API Module
 import { singleAPICall } from "./apiClient.js";
-import { replaceIMG, errorDisplay } from "./uiUtils.js";
+import { replaceIMG, displayError } from "./uiUtils.js";
 
 // API Endpoints
 const DOG_IMG_API = "https://dog.ceo/api/breeds/image/random";
@@ -31,7 +31,7 @@ export const setupAnimalAPIHandlers = () => {
             replaceIMG(dogPhotoURL, "#api0-container", "Random Dog Photo");
         } catch (error) {
             console.error(`Dog API error: ${error}`);
-            errorDisplay("#api0-container", "Issue getting dog, please try again");
+            displayError("#api0-container", "Issue getting dog, please try again");
         }
     });
 
@@ -41,7 +41,7 @@ export const setupAnimalAPIHandlers = () => {
             replaceIMG(catPhotoURL, "#api1-container", "Random Cat Photo");
         } catch (error) {
             console.error(`Cat API Error: ${error}`);
-            errorDisplay("#api1-container", "Issue getting cat please try again");
+            displayError("#api1-container", "Issue getting cat please try again");
         }
     });
 };

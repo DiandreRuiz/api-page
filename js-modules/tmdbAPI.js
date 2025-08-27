@@ -1,5 +1,6 @@
 import { singleAPICall } from "./apiClient.js";
-import { errorDisplay } from "./uiUtils.js";
+import { displayError } from "./uiUtils.js";
+import { displayMovieList } from "./uiUtils.js";
 
 // Load in API creds
 const getAPIKey = async () => {
@@ -46,8 +47,13 @@ export const getNowPlayingMovies = async () => {
 export const setupTMDBAPIHandlers = () => {
     const nowPlayingButton = document.querySelector("#api-4-button");
     nowPlayingButton.addEventListener("click", async () => {
-        const api4Container = document.querySelector("#api4-container");
-        const movieList = await getNowPlayingMovies();
-        displayMovieList(movieList, api4Container);
+        try {
+            const api4Container = document.querySelector("#api4-container");
+            const movieList = await getNowPlayingMovies();
+            displayMovieList(movieList, api4Container);
+        } catch (error) {
+            console.error(`Error getting now playing movie list: ${error}`);
+            displayError("#api4-container", error.message);
+        }
     });
 };
