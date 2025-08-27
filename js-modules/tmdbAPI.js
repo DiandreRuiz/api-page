@@ -2,8 +2,11 @@ import { singleAPICall } from "./apiClient.js";
 import { errorDisplay } from "./uiUtils.js";
 
 // Load in API creds
-const api_key = await fetch("../config.json");
-console.log(api_key);
+export async function retrieveAPIKey() {
+    const tmdbJSON = await fetch("../config.json");
+    const data = await tmdbJSON.json();
+    console.log(data);
+}
 
 // Function that returns result from api call
 
