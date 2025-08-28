@@ -1,6 +1,5 @@
 import { singleAPICall } from "./apiClient.js";
-import { displayDadJoke } from "./uiUtils.js";
-import { displayError } from "./uiUtils.js";
+import { showSpinner, displayError, displayDadJoke } from "./uiUtils.js";
 
 const DAD_JOKE_API = "https://icanhazdadjoke.com/";
 
@@ -17,7 +16,9 @@ export const setupDadJokeAPIHandler = () => {
     const jokeButton = document.querySelector("#api-3-button");
     jokeButton.addEventListener("click", async () => {
         try {
+            // Show loading spinner while waiting for API response
             const api3Container = document.querySelector("#api3-container");
+            showSpinner(api3Container);
             const dadJoke = await getDadJoke();
             displayDadJoke(dadJoke, api3Container);
         } catch (error) {

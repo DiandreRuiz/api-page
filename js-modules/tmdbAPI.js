@@ -1,6 +1,5 @@
 import { singleAPICall } from "./apiClient.js";
-import { displayError } from "./uiUtils.js";
-import { displayMovieList } from "./uiUtils.js";
+import { displayError, showSpinner, displayMovieList } from "./uiUtils.js";
 
 // Load in API creds
 const getAPIKey = async () => {
@@ -55,6 +54,8 @@ export const setupTMDBAPIHandlers = () => {
     nowPlayingForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
+        // Preserve scroll position
+        const scrollY = window.scrollY;
         try {
             // Clear currently displayed errors
             if (nowPlayingForm.querySelector(".errorUserInputHeading")) {
@@ -62,15 +63,22 @@ export const setupTMDBAPIHandlers = () => {
                 currentErrorH5.remove();
             }
 
-            // Get movie list and display results
+            // Get movie list and display results. Show loading spinner while waiting for API response.
             const UserInputCountryCode = nowPlayingForm.querySelector("#country-input").value.trim();
             const api4Container = document.querySelector("#api4-container");
+            showSpinner(api4Container);
             const movieList = await getNowPlayingMovies(UserInputCountryCode);
 
             displayMovieList(movieList, api4Container);
+            
+            // Restore scroll position after content update
+            window.scrollTo(0, document.body.scrollHeight);
         } catch (error) {
             console.error(`Error getting now playing movie list: ${error}`);
             displayError("#api4-container", error.message);
+            
+            // Restore scroll position even on error
+            window.scrollTo(0, scrollY);
         }
     });
 };

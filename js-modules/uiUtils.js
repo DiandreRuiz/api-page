@@ -94,3 +94,20 @@ export const displayMovieList = (movieList, resultContainerElement) => {
     resultContainerElement.innerHTML = "";
     resultContainerElement.appendChild(movieListUl);
 };
+
+export const showSpinner = (containerElement) => {
+    // Create Spinner
+    containerElement.innerHTML = "";
+    const spinnerDiv = document.createElement("div");
+    spinnerDiv.classList.add("spinner-border", "text-primary");
+    spinnerDiv.setAttribute("role", "status");
+
+    // Accessibility span
+    const spinnerSpan = document.createElement("span");
+    spinnerSpan.classList.add("visually-hidden");
+    spinnerSpan.innerText = "Loading...";
+    spinnerDiv.appendChild(spinnerSpan);
+
+    // Add Spinner to container
+    containerElement.appendChild(spinnerDiv);
+};
