@@ -1,6 +1,6 @@
 // Weather API Module
 import { singleAPICall } from "./apiClient.js";
-import { displayError, displayTemperature } from "./uiUtils.js";
+import { displayError, displayTemperature, showSpinner } from "./uiUtils.js";
 
 // API Endpoints
 const OPEN_METEO_GEOCODING_API = "https://geocoding-api.open-meteo.com/v1/search";
@@ -24,8 +24,6 @@ const getCitySearch = async (citySearchString) => {
     }
 
     const firstResult = citySearchData.results[0];
-
-    console.log(firstResult);
 
     return {
         countryName: firstResult.country,
@@ -89,8 +87,9 @@ export const setupWeatherAPIHandlers = () => {
             }
 
             // Calculate temperature and display results
-            const userInputString = averageTempForm.querySelector("#city-input").value.trim();
             const api2Container = document.querySelector("#api2-container");
+            showSpinner(api2Container)
+            const userInputString = averageTempForm.querySelector("#city-input").value.trim();
             const userInputStringTempResult = await getUserInputCurrentTemp(userInputString);
 
             let confidentMatch = false;
@@ -98,14 +97,7 @@ export const setupWeatherAPIHandlers = () => {
                 confidentMatch = true;
             }
 
-            displayTemperature(
-                confidentMatch,
-                userInputStringTempResult.cityName,
-                userInputStringTempResult.stateOrProvince,
-                userInputStringTempResult.countryName,
-                userInputStringTempResult.temperatureF,
-                api2Container);
-            
+            displayTemperature(confidentMatch, userInputStringTempResult.cityName, userInputStringTempResult.stateOrProvince, userInputStringTempResult.countryName, userInputStringTempResult.temperatureF, api2Container);
         } catch (error) {
             console.error(`Error looking up temperature: ${error}`);
             displayError("#api2-container", error.message);

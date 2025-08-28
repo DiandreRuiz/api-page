@@ -99,7 +99,7 @@ export const showSpinner = (containerElement) => {
     // Create Spinner
     containerElement.innerHTML = "";
     const spinnerDiv = document.createElement("div");
-    spinnerDiv.classList.add("spinner-border", "text-primary");
+    spinnerDiv.classList.add("spinner-border", "text-primary", "mb-2");
     spinnerDiv.setAttribute("role", "status");
 
     // Accessibility span

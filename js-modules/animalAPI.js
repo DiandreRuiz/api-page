@@ -1,6 +1,6 @@
 // Animal Pictures API Module
 import { singleAPICall } from "./apiClient.js";
-import { replaceIMG, displayError } from "./uiUtils.js";
+import { replaceIMG, displayError, showSpinner } from "./uiUtils.js";
 
 // API Endpoints
 const DOG_IMG_API = "https://dog.ceo/api/breeds/image/random";
@@ -27,6 +27,7 @@ export const setupAnimalAPIHandlers = () => {
 
     dogAPIButton.addEventListener("click", async () => {
         try {
+            showSpinner(document.querySelector("#api0-container"));
             const dogPhotoURL = await getDogImage();
             replaceIMG(dogPhotoURL, "#api0-container", "Random Dog Photo");
         } catch (error) {
@@ -37,6 +38,7 @@ export const setupAnimalAPIHandlers = () => {
 
     catAPIButton.addEventListener("click", async () => {
         try {
+            showSpinner(document.querySelector("#api1-container"));
             const catPhotoURL = await getCatImage();
             replaceIMG(catPhotoURL, "#api1-container", "Random Cat Photo");
         } catch (error) {
