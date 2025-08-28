@@ -4,7 +4,7 @@ import { displayMovieList } from "./uiUtils.js";
 
 // Load in API creds
 const getAPIKey = async () => {
-    const tmdbJSON = await fetch("../config.json");
+    const tmdbJSON = await fetch("../config/config.json");
     const data = await tmdbJSON.json();
     return data.TMDB_API_KEY;
 };
