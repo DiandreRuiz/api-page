@@ -4,6 +4,10 @@
     --font-family: 'TASA Explorer', sans-serif;
 }
 
+body {
+    background-color: rgb(202, 252, 255);
+}
+
 .api-card {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
